@@ -12,6 +12,8 @@ namespace Portfolio
 {
     public partial class Form1 : Form
     {
+        private Bitmap _image;
+
         public Form1()
         {
             InitializeComponent();
@@ -32,11 +34,16 @@ namespace Portfolio
             richTextBox1.AppendText(textBox1.Text + "\r");
         }
 
+        // 開啟圖片檔
         private void button3_Click(object sender, EventArgs e)
         {
-            if (openFileDialog1.ShowDialog() == System.Windows.Forms.DialogResult.OK)
+            if (openFileDialog1.ShowDialog() == DialogResult.OK)
             {
-                pictureBox1.Image = new Bitmap(openFileDialog1.FileName);
+                richTextBox1.AppendText("載入:"+ openFileDialog1.FileName+ "\r");
+                System.IO.FileStream fs = new System.IO.FileStream(openFileDialog1.FileName, System.IO.FileMode.Open);
+                _image = new Bitmap(fs);
+                fs.Close();
+                pictureBox1.Image = _image;
             }
         }
     }
