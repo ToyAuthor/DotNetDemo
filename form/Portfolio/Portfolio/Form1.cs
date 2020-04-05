@@ -31,5 +31,13 @@ namespace Portfolio
         {
             richTextBox1.AppendText(textBox1.Text + "\r");
         }
+
+        private void button3_Click(object sender, EventArgs e)
+        {
+            if (openFileDialog1.ShowDialog() == System.Windows.Forms.DialogResult.OK)
+            {
+                pictureBox1.Image = new Bitmap(openFileDialog1.FileName);
+            }
+        }
     }
 }
