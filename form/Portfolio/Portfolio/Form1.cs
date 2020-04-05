@@ -13,10 +13,15 @@ namespace Portfolio
     public partial class Form1 : Form
     {
         private Bitmap _image;
+        private Pen _pen;
+        private float _x, _y;
 
         public Form1()
         {
             InitializeComponent();
+            _image = new Bitmap(300, 270);
+            pictureBox1.BackColor = Color.White;
+            _pen = new Pen(Color.Black, 2);  // 指定畫筆的顏色與粗細
             radioButton1.Checked = true;
             richTextBox1.AppendText("這裡用來輸出資訊\r");
         }
@@ -31,6 +36,7 @@ namespace Portfolio
 
         private void button2_Click(object sender, EventArgs e)
         {
+            // Application.Exit();       // 關閉程式
             richTextBox1.AppendText(textBox1.Text + "\r");
         }
 
@@ -44,6 +50,40 @@ namespace Portfolio
                 _image = new Bitmap(fs);
                 fs.Close();
                 pictureBox1.Image = _image;
+            }
+        }
+
+        private void pictureBox1_MouseDown(object sender, MouseEventArgs e)
+        {
+            _x = e.X;
+            _y = e.Y;
+        }
+
+        private void button4_Click(object sender, EventArgs e)
+        {
+            saveFileDialog1.Filter = "點陣圖 (*.bmp)|*.bmp|JPEG (*.JPG)|*.JPG|" + "GIF(*.GIF)| *. GIF|All File (*.*)|*.*";
+
+            // 執行saveFileDialog1.ShowDialog()，將圖案物件的內容儲存到指定的檔案內
+            if (saveFileDialog1.ShowDialog() == DialogResult.OK)
+            {
+                richTextBox1.AppendText("儲存到:" + saveFileDialog1.FileName + "\r");
+                _image.Save(saveFileDialog1.FileName);
+            }
+        }
+
+        private void pictureBox1_MouseMove(object sender, MouseEventArgs e)
+        {
+            //宣告畫布的來源是bmp圖案物件
+            Graphics g = Graphics.FromImage(_image);
+            //如果按下滑鼠左鍵時
+            if (e.Button == MouseButtons.Left)
+            {
+                //隨指標移動不斷在畫布上(圖案物件)畫短點直線
+                g.DrawLine(_pen, _x, _y, e.X, e.Y);
+                //用圖片方塊picDraw來顯示畫布(圖案物件)的內容
+                pictureBox1.Image = _image;
+                _x = e.X;
+                _y = e.Y;
             }
         }
     }
