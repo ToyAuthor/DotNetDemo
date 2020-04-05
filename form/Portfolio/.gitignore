@@ -1,0 +1,8 @@
+#ignore these files
+#.gitignore
+#微軟也建議suo應該忽略的
+.vs/Portfolio/v14/.suo
+Portfolio/bin/*
+Portfolio/obj/*
+*/Thumbs.db
+Thumbs.db
