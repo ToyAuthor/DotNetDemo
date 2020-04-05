@@ -1,0 +1,8 @@
+D:\code\DotNetDemo\form\Portfolio\Portfolio\bin\Debug\Portfolio.exe.config
+D:\code\DotNetDemo\form\Portfolio\Portfolio\bin\Debug\Portfolio.exe
+D:\code\DotNetDemo\form\Portfolio\Portfolio\bin\Debug\Portfolio.pdb
+D:\code\DotNetDemo\form\Portfolio\Portfolio\obj\Debug\Portfolio.csprojResolveAssemblyReference.cache
+D:\code\DotNetDemo\form\Portfolio\Portfolio\obj\Debug\Portfolio.Properties.Resources.resources
+D:\code\DotNetDemo\form\Portfolio\Portfolio\obj\Debug\Portfolio.csproj.GenerateResource.Cache
+D:\code\DotNetDemo\form\Portfolio\Portfolio\obj\Debug\Portfolio.exe
+D:\code\DotNetDemo\form\Portfolio\Portfolio\obj\Debug\Portfolio.pdb
