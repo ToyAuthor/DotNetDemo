@@ -72,6 +72,7 @@
             this.radioButton1.TabStop = true;
             this.radioButton1.Text = "允許清理";
             this.radioButton1.UseVisualStyleBackColor = true;
+            this.radioButton1.CheckedChanged += new System.EventHandler(this.radioButton1_CheckedChanged);
             // 
             // button2
             // 
