@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Drawing;
+using System.Xml;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -15,6 +16,7 @@ namespace Portfolio
         private Bitmap _image;
         private Pen _pen;
         private float _x, _y;
+        private XmlDocument _doc = new XmlDocument();
 
         public Form1()
         {
@@ -24,6 +26,20 @@ namespace Portfolio
             _pen = new Pen(Color.Black, 2);  // 指定畫筆的顏色與粗細
             radioButton1.Checked = true;
             richTextBox1.AppendText("這裡用來輸出資訊\r");
+
+            if (System.IO.Directory.Exists("setting.xml"))
+            {
+                _doc.Load("setting.xml");
+            }
+            else
+            {
+                var root = _doc.CreateElement("setting");
+                _doc.AppendChild(root);
+
+                var swith = _doc.CreateElement("switch");
+                swith.SetAttribute("removeable", "true");
+                root.AppendChild(swith);
+            }
         }
 
         private void button1_Click(object sender, EventArgs e)
@@ -46,7 +62,7 @@ namespace Portfolio
             if (openFileDialog1.ShowDialog() == DialogResult.OK)
             {
                 richTextBox1.AppendText("載入:"+ openFileDialog1.FileName+ "\r");
-                System.IO.FileStream fs = new System.IO.FileStream(openFileDialog1.FileName, System.IO.FileMode.Open);
+                var fs = new System.IO.FileStream(openFileDialog1.FileName, System.IO.FileMode.Open);
                 _image = new Bitmap(fs);
                 fs.Close();
                 pictureBox1.Image = _image;
@@ -71,10 +87,16 @@ namespace Portfolio
             }
         }
 
+        private void Form1_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            _doc.Save("setting.xml");
+        }
+
         private void pictureBox1_MouseMove(object sender, MouseEventArgs e)
         {
             //宣告畫布的來源是bmp圖案物件
-            Graphics g = Graphics.FromImage(_image);
+            var g = Graphics.FromImage(_image);
+
             //如果按下滑鼠左鍵時
             if (e.Button == MouseButtons.Left)
             {
