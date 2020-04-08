@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Drawing;
-using System.Xml;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -16,7 +15,7 @@ namespace Portfolio
         private Bitmap _image;
         private Pen _pen;
         private float _x, _y;
-        private XmlDocument _doc = new XmlDocument();
+        private Portfolio.Setting _xml;
 
         public Form1()
         {
@@ -26,45 +25,12 @@ namespace Portfolio
             _pen = new Pen(Color.Black, 2);  // 指定畫筆的顏色與粗細
             richTextBox1.AppendText("這裡用來輸出資訊\r");
 
-            //if (System.IO.Directory.Exists("setting.xml"))   //檔案跟資料夾要分開來測試
-            if (System.IO.File.Exists("setting.xml"))
-                {
-                _doc.Load("setting.xml");
-                richTextBox1.AppendText("讀取舊xml\r");
-            }
+            _xml = new Portfolio.Setting((string str)=> { richTextBox1.AppendText(str+"\r"); });
+
+            if (_xml.removeable)
+                radioButton1.Checked = true;
             else
-            {
-                richTextBox1.AppendText("建立新的xml\r");
-                var root = _doc.CreateElement("setting");
-                _doc.AppendChild(root);
-
-                var swith = _doc.CreateElement("switch");
-                swith.SetAttribute("removeable", "true");
-                swith.SetAttribute("test", "false");
-                root.AppendChild(swith);
-            }
-
-            var main = _doc.SelectSingleNode("setting/switch");
-
-            if (main == null)
-            {
-                richTextBox1.AppendText("讀xml時出了問題\r");
-            }
-            else
-            {
-                XmlElement element = (XmlElement)main;
-
-                if ("true" == element.GetAttribute("removeable"))
-                {
-                    radioButton1.Checked = true;
-                    //radioButton2.Checked = false;
-                }
-                else
-                {
-                    radioButton2.Checked = true;
-                    //radioButton1.Checked = false;
-                }
-            }
+                radioButton2.Checked = true;
         }
 
         private void button1_Click(object sender, EventArgs e)
@@ -114,39 +80,12 @@ namespace Portfolio
 
         private void Form1_FormClosing(object sender, FormClosingEventArgs e)
         {
-            _doc.Save("setting.xml");
+            _xml.save();
         }
 
         private void radioButton1_CheckedChanged(object sender, EventArgs e)
         {
-            var main = _doc.SelectSingleNode("setting/switch");
-            if (main == null)
-                return;
-            //取得節點內的欄位
-            XmlElement element = (XmlElement)main;
-
-            if (radioButton1.Checked == true)
-                element.SetAttribute("removeable", "true");
-            else
-                element.SetAttribute("removeable", "false");
-
-            /* 全部屬性一起挑出來處理
-            XmlAttributeCollection attributes = element.Attributes;
-
-            foreach (XmlAttribute item in attributes)
-            {
-                if (item.Name == "removeable")
-                {
-                    if (radioButton1.Checked == true)
-                    {
-                        item.Value = "true";
-                    }
-                    else
-                    {
-                        item.Value = "false";
-                    }
-                }
-            }*/
+            _xml.removeable = radioButton1.Checked;
         }
 
         private void pictureBox1_MouseMove(object sender, MouseEventArgs e)
