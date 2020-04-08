@@ -22,6 +22,7 @@ namespace Portfolio
             InitializeComponent();
             _image = new Bitmap(300, 270);
             pictureBox1.BackColor = Color.White;
+            pictureBox1.Image = _image;
             _pen = new Pen(Color.Black, 2);  // 指定畫筆的顏色與粗細
             richTextBox1.AppendText("這裡用來輸出資訊\r");
 
