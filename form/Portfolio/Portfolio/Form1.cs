@@ -46,6 +46,12 @@ namespace Portfolio
         {
             // Application.Exit();       // 關閉程式
             richTextBox1.AppendText(textBox1.Text + "\r");
+
+            // 使用'using' 自動做Flush()、Close()、Dispose(), 釋放 dev 資源.
+            using (var dev = new System.IO.StreamWriter("test.txt", true))  // 'true':新建或附加.
+            {
+                dev.WriteLine(textBox1.Text);
+            }
         }
 
         // 開啟圖片檔

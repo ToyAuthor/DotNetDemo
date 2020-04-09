@@ -8,5 +8,9 @@ namespace CSLibrary
 {
     public class Class1
     {
+        public int countingStart(int i)
+        {
+            return i + 1;
+        }
     }
 }
