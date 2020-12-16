@@ -42,17 +42,17 @@ namespace Portfolio
             }
         }
 
-        private void button2_Click(object sender, EventArgs e)
+		private void button2_Click(object sender, EventArgs e)
         {
             // Application.Exit();       // 關閉程式
             richTextBox1.AppendText(textBox1.Text + "\r");
 
-            // 使用'using' 自動做Flush()、Close()、Dispose(), 釋放 dev 資源.
-            using (var dev = new System.IO.StreamWriter("test.txt", true))  // 'true':新建或附加.
+			// 使用'using' 自動做Flush()、Close()、Dispose(), 釋放 dev 資源.
+			using (var dev = new System.IO.StreamWriter("test.txt", true))  // 'true':新建或附加.
             {
                 dev.WriteLine(textBox1.Text);
             }
-        }
+		}
 
         // 開啟圖片檔
         private void button3_Click(object sender, EventArgs e)
@@ -73,7 +73,11 @@ namespace Portfolio
             _y = e.Y;
         }
 
-        private void button4_Click(object sender, EventArgs e)
+		private void button5_Click( object sender, EventArgs e )
+		{
+		}
+
+		private void button4_Click(object sender, EventArgs e)
         {
             saveFileDialog1.Filter = "點陣圖 (*.bmp)|*.bmp|JPEG (*.JPG)|*.JPG|" + "GIF(*.GIF)| *. GIF|All File (*.*)|*.*";
 
