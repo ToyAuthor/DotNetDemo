@@ -1,9 +1,10 @@
 ﻿using SysContainer = System.Collections.Generic;
 using SysGraph = System.Drawing;
+using SysCpp = System.Runtime.InteropServices;
 
 namespace LostUtility
 {
-	class Image
+	public class Image
 	{
 		// ARGB -> 4
 		// RGB -> 3
@@ -54,6 +55,20 @@ namespace LostUtility
 			}
 
 			return string.Empty;
+		}
+
+		//-------------------------------------------------------------------------
+
+		[SysCpp.DllImport( @"C:\Users\User\Downloads\code\DotNetDemo\form\LostUtility\x64\Debug\CppImage.dll", EntryPoint = "cppimage_tset_string" )]
+		private static extern System.IntPtr StrFormCpp( System.IntPtr str );
+
+		static public string StringFromCpp( string str )
+		{
+			/*
+			 * SysCpp.Marshal.StringToBSTR( str ) -> 轉成 wchar_t*
+			 * SysCpp.Marshal.StringToHGlobalAnsi( str ) -> UTF-8 的 char*
+			 */
+			return SysCpp.Marshal.PtrToStringUni( StrFormCpp( SysCpp.Marshal.StringToBSTR( str ) ) );
 		}
 
 		//-------------------------------------------------------------------------

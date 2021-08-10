@@ -3,6 +3,32 @@ namespace LostUtility
 {
 	public class Time
 	{
+		//-----------------------------------------------------------
+
+		public class Seconds
+		{
+			// 取得當下時間，單位:秒
+			public static ulong GetTick()
+			{
+				// return System.Convert.ToUInt64( System.DateTime.UtcNow.AddHours( 8 ).Subtract( new System.DateTime( 1970, 1, 1 ) ).TotalSeconds );
+				return System.Convert.ToUInt64( System.DateTime.Now.Subtract( new System.DateTime( 1970, 1, 1 ) ).TotalSeconds );
+			}
+
+			// 這函式的功能跟 StringToTick 是成對的
+			public static string TickToString( ulong tick )
+			{
+				return (new System.DateTime( 1970, 1, 1 )).AddSeconds( System.Convert.ToInt32( tick ) ).ToString( "yyyy_MM_dd_HH_mm_ss" );
+			}
+
+			// 這函式的功能跟 TickToString 是成對的
+			public static ulong StringToTick( string tick )
+			{
+				return System.Convert.ToUInt64( System.DateTime.ParseExact( tick, "yyyy_MM_dd_HH_mm_ss", System.Globalization.CultureInfo.InvariantCulture ).Subtract( new System.DateTime( 1970, 1, 1 ) ).TotalSeconds );
+			}
+		}
+
+		//-----------------------------------------------------------
+
 		public class Timer
 		{
 			private long _tick = 0;
