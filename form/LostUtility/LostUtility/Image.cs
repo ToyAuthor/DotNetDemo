@@ -1,4 +1,50 @@
-﻿using SysContainer = System.Collections.Generic;
+﻿
+/*
+
+這邊的討論列了很多做法來獲取 byte array 的 IntPtr
+https://stackoverflow.com/questions/537573/how-to-get-intptr-from-byte-in-c-sharp/23838643
+
+
+// C++
+class Data
+{
+	public:
+		int m_Int;          // int
+		char m_Str[32];     // 字串
+		int m_IntAry[10];   // int陣列
+};
+
+// C#
+[StructLayout(LayoutKind.Sequential, Pack = 4)]
+[Serializable]
+public class Data
+{
+    public int m_Int;                 // int
+    [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 32)]
+    public string m_Str;              // 字串
+    [MarshalAs(UnmanagedType.ByValArray, SizeConst = 10)]
+    public int[] m_IntAry;            // int陣列
+};
+
+[DllImport(SysPluginBase.PlatformDllName)]
+private static extern System.IntPtr Test_Func();
+
+public Data GetData()
+{
+    System.IntPtr DataPtr = Test_Func();
+
+    if (DataPtr == System.IntPtr.Zero)
+    return null;
+
+    Data Dta = (Data)Marshal.PtrToStructure(DataPtr, typeof(Data));
+    return Dta;
+}
+
+// 結構中不要使用bool, 因為長度有可能是32bit, 用 byte 比較保險
+*/
+
+
+using SysContainer = System.Collections.Generic;
 using SysGraph = System.Drawing;
 using SysCpp = System.Runtime.InteropServices;
 
@@ -65,10 +111,21 @@ namespace LostUtility
 		static public string StringFromCpp( string str )
 		{
 			/*
-			 * SysCpp.Marshal.StringToBSTR( str ) -> 轉成 wchar_t*
-			 * SysCpp.Marshal.StringToHGlobalAnsi( str ) -> UTF-8 的 char*
+			 * SysCpp.Marshal.StringToBSTR( str ) -> 轉成 wchar_t*              需要用 SysCpp.Marshal.FreeBSTR 收尾
+			 * SysCpp.Marshal.StringToHGlobalAnsi( str ) -> UTF-8 的 char*      需要用 SysCpp.Marshal.FreeHGlobal 收尾
+			 *
+			 * Marshal.AllocHGlobal 跟 Marshal.FreeHGlobal 的搭配更常見
 			 */
-			return SysCpp.Marshal.PtrToStringUni( StrFormCpp( SysCpp.Marshal.StringToBSTR( str ) ) );
+			//return SysCpp.Marshal.PtrToStringUni( StrFormCpp( SysCpp.Marshal.StringToBSTR( str ) ) );
+
+
+			var temp = SysCpp.Marshal.StringToBSTR( str );
+
+			string result = SysCpp.Marshal.PtrToStringUni( StrFormCpp( temp ) );
+
+			SysCpp.Marshal.FreeBSTR( temp );
+
+			return result;
 		}
 
 		//-------------------------------------------------------------------------

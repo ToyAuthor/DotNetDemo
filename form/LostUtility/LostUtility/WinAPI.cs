@@ -34,7 +34,7 @@ namespace LostUtility
 		static public extern bool DestroyWindow( System.IntPtr hWnd );
 
 		[SysDLL.DllImport( "msvcrt.dll", SetLastError = false )]
-		static public extern System.IntPtr memcpy( System.IntPtr dest, System.IntPtr src, int count );
+		static public extern System.IntPtr Memcpy( System.IntPtr dest, System.IntPtr src, int count );
 
 		// https://help4windows.com/windows_7_shell32_dll.shtml
 		// 依給定 ID 來選擇想要的 icon
